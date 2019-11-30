@@ -1,4 +1,4 @@
-const lib = require("./lib.js");
+const lib = require("../lib.js");
 
 // Erskine 10101324
 // Central 10101100

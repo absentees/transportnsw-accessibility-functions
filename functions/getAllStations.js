@@ -1,4 +1,4 @@
-const lib = require("./lib.js");
+const lib = require("../lib.js");
 
 
 exports.handler = async (event, context) => {
