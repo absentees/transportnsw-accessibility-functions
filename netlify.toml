@@ -1,2 +1,2 @@
 [build]
-  functions = "functions" #  netlify-lambda reads this
+  functions = "functions"
