@@ -1,5 +1,5 @@
-const stations = require("./nsw-train-stations.js");
-const tenStations = require("./ten.js");
+const stations = require("../nsw-train-stations.js");
+const tenStations = require("../ten.js");
 var Xray = require("x-ray");
 var x = Xray();
 
