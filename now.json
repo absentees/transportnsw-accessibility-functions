@@ -1,0 +1,16 @@
+{
+    "name": "transportnsw-accessibility-function",
+    "version": 2,
+    "builds": [
+        {"src": "index.js", "use": "@now/node"}
+    ],
+    "routes": [
+        {
+            "src": "/getAllStations", "dest": "index.js"
+        },{
+            "src": "/getStationByID", "dest": "index.js"
+        }, {
+            "src": "/getStationByName", "dest": "index.js"
+        }
+    ]
+}
