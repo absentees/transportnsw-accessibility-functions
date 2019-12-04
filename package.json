@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "airtable": "^0.8.1",
+    "dotenv": "^8.2.0",
     "polka": "^0.5.2",
     "x-ray": "^2.3.4"
   },

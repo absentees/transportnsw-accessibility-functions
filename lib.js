@@ -1,9 +1,51 @@
-const stations = require("./nsw-train-stations.js");
-const tenStations = require("./ten.js");
+// const stations = require("./nsw-train-stations.js");
+// const tenStations = require("./ten.js");
 var Xray = require("x-ray");
 var x = Xray();
+const Airtable = require("airtable");
+Airtable.configure({
+    endpointUrl: "https://api.airtable.com",
+    apiKey: process.env.GOOD_INTERNET_AIRTABLE_API_KEY
+});
+const base = Airtable.base(process.env.STATIONS_BASE_ID);
 
 var accessibilityRegex = new RegExp("(is not wheelchair accessible)", "g");
+
+async function updateAllStations() {
+    // Get all stations
+    let stations = await getALlStationData();
+    console.log(stations);
+
+    const promises = stations.map(async station => {
+        try {
+            stations.wheelchairAccess = await getStationAccessibilityById(
+                station.id
+            );
+
+            // Update in airtable
+
+        } catch (error) {
+            console.log(`Error finding accessibility ${station.id}: ${error}`);
+        }
+    });
+    const result = await Promise.all(promises);
+}
+
+async function updateStationRecord(record) {
+
+}
+
+async function getALlStationData() {
+    try {
+        return await base("All Stations")
+            .select({
+                view: "Grid view"
+            })
+            .all();
+    } catch (error) {
+        throw error;
+    }
+}
 
 async function getAllStations() {
     // TODO: Change this to all stations
@@ -75,5 +117,6 @@ async function getStationId(stationName) {
 module.exports = {
     getStationAccessibilityById,
     getAllStations,
-    getStationId
+    getStationId,
+    updateAllStations
 };
