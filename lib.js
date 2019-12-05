@@ -14,63 +14,69 @@ var accessibilityRegex = new RegExp("(is not wheelchair accessible)", "g");
 async function updateAllStations() {
     // Get all stations
     let stations = await getALlStationData();
-    console.log(stations);
 
     const promises = stations.map(async station => {
         try {
-            stations.wheelchairAccess = await getStationAccessibilityById(
-                station.id
+            station.fields.wheelchairAccess = await getStationAccessibilityById(
+                station.fields.id
             );
 
             // Update in airtable
+            await base("All Stations").update(station.id, {
+                "wheelchairAccess": station.fields.wheelchairAccess
+            });
 
         } catch (error) {
             console.log(`Error finding accessibility ${station.id}: ${error}`);
         }
     });
     const result = await Promise.all(promises);
+    return result;
 }
 
-async function updateStationRecord(record) {
-
-}
-
-async function getALlStationData() {
+async function getAllStations() {
     try {
-        return await base("All Stations")
+        let records = await base("All Stations")
             .select({
                 view: "Grid view"
             })
             .all();
+        return records.map((record) => {
+            return {
+                "id": record.fields.id,
+                "name": record.fields.name,
+                "wheelchairAccess": record.fields.wheelchairAccess
+            }
+        })
     } catch (error) {
         throw error;
     }
 }
 
-async function getAllStations() {
-    // TODO: Change this to all stations
-    const promises = stations.map(async station => {
-        try {
-            const stationAccess = await getStationAccessibilityById(station.id);
-            return {
-                id: station.id,
-                name: station.station,
-                wheelchairAccess: stationAccess
-            };
-        } catch (error) {
-            console.log(`Error finding accessibility ${station.id}: ${error}`);
-            return {
-                id: station.id,
-                name: station.station,
-                wheelchairAccess: false
-            };
-        }
-    });
+// async function getAllStations() {
+//     // TODO: Change this to all stations
+//     const promises = stations.map(async station => {
+//         try {
+//             const stationAccess = await getStationAccessibilityById(station.id);
+//             return {
+//                 id: station.id,
+//                 name: station.station,
+//                 wheelchairAccess: stationAccess
+//             };
+//         } catch (error) {
+//             console.log(`Error finding accessibility ${station.id}: ${error}`);
+//             return {
+//                 id: station.id,
+//                 name: station.station,
+//                 wheelchairAccess: false
+//             };
+//         }
+//     });
 
-    const result = await Promise.all(promises);
+//     const result = await Promise.all(promises);
 
-    return result;
-}
+//     return result;
+// }
 
 async function getStationAccessibilityById(stationId) {
     try {

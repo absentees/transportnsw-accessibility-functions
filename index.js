@@ -14,8 +14,13 @@ async function getAllStations(req, res, next) {
 }
 
 async function updateAllStations(req,res,next) {
-    const result = await lib.updateAllStations();
-    res.end(result);
+    try {
+        const result = await lib.updateAllStations();    
+    } catch (error) {
+        res.end(error);
+    }
+    
+    res.end("All updated");
 }
 
 async function getStationByID(req, res, next) {
