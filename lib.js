@@ -47,7 +47,7 @@ async function getAllStations() {
                 "name": record.fields.name,
                 "wheelchairAccess": record.fields.wheelchairAccess
             }
-        })
+        });
     } catch (error) {
         throw error;
     }

@@ -12,5 +12,9 @@
         }, {
             "src": "/getStationByName", "dest": "index.js"
         }
-    ]
+    ],
+    "env": {
+        "GOOD_INTERNET_AIRTABLE_API_KEY": "@good_airtable_key",
+        "STATIONS_BASE_ID": "@stations_base_id"
+    }
 }
