@@ -6,11 +6,11 @@
     ],
     "routes": [
         {
+            "src": "/updateAllStations", "dest": "index.js"
+        },{
             "src": "/getAllStations", "dest": "index.js"
         },{
             "src": "/getStationByID", "dest": "index.js"
-        }, {
-            "src": "/getStationByName", "dest": "index.js"
         }
     ],
     "env": {

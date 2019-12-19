@@ -17,7 +17,7 @@ async function updateAllStations(req,res,next) {
     try {
         const result = await lib.updateAllStations();    
     } catch (error) {
-        res.end(error);
+        res.end(error.message);
     }
     
     res.end("All updated");
@@ -40,28 +40,9 @@ async function getStationByID(req, res, next) {
     }
 }
 
-async function getStationByName(req, res, next) {
-    try {
-        const stationName = req.query.name;
-        const stationId = await lib.getStationId(stationName);
-        const stationAccess = await lib.getStationAccessibilityById(stationId);
-
-        res.end(
-            JSON.stringify({
-                id: stationId,
-                name: stationName,
-                wheelchairAccess: stationAccess
-            })
-        );
-    } catch (e) {
-        throw e;
-    }
-}
-
 polka()
     .get("/getAllStations", getAllStations)
     .get("/getStationByID", getStationByID)
-    .get("/getStationByName", getStationByName)
     .get("/updateAllStations", updateAllStations)
     .listen(3000, err => {
         if (err) throw err;

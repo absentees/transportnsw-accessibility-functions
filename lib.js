@@ -13,17 +13,17 @@ var accessibilityRegex = new RegExp("(is not wheelchair accessible)", "g");
 
 async function updateAllStations() {
     // Get all stations
-    let stations = await getALlStationData();
+    let stations = await getAllStations();
 
     const promises = stations.map(async station => {
         try {
-            station.fields.wheelchairAccess = await getStationAccessibilityById(
-                station.fields.id
+            station.wheelchairAccess = await getStationAccessibilityById(
+                station.id
             );
 
             // Update in airtable
             await base("All Stations").update(station.id, {
-                "wheelchairAccess": station.fields.wheelchairAccess
+                "wheelchairAccess": station.wheelchairAccess
             });
 
         } catch (error) {
@@ -53,31 +53,6 @@ async function getAllStations() {
     }
 }
 
-// async function getAllStations() {
-//     // TODO: Change this to all stations
-//     const promises = stations.map(async station => {
-//         try {
-//             const stationAccess = await getStationAccessibilityById(station.id);
-//             return {
-//                 id: station.id,
-//                 name: station.station,
-//                 wheelchairAccess: stationAccess
-//             };
-//         } catch (error) {
-//             console.log(`Error finding accessibility ${station.id}: ${error}`);
-//             return {
-//                 id: station.id,
-//                 name: station.station,
-//                 wheelchairAccess: false
-//             };
-//         }
-//     });
-
-//     const result = await Promise.all(promises);
-
-//     return result;
-// }
-
 async function getStationAccessibilityById(stationId) {
     try {
         console.log("Finding accessibility of station: " + stationId);
@@ -101,28 +76,10 @@ async function getStationAccessibilityById(stationId) {
     }
 }
 
-async function getStationId(stationName) {
-    try {
-        for (let station of stations) {
-            if (station.alt.toLowerCase() === stationName.toLowerCase()) {
-                console.log(
-                    `Station name ${stationName} has id: ${station.id}`
-                );
-                return Promise.resolve(station.id);
-            }
-        }
-
-        return Promise.reject(
-            `Station name: ${stationName} could not be found`
-        );
-    } catch (error) {
-        return Promise.reject(error.message);
-    }
-}
+.stop-accessibility > ul:nth-child(2) > li:nth-child(1)
 
 module.exports = {
     getStationAccessibilityById,
     getAllStations,
-    getStationId,
     updateAllStations
 };
