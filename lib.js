@@ -22,7 +22,7 @@ async function updateAllStations() {
             );
 
             // Update in airtable
-            await base("All Stations").update(station.id, {
+            await base("All Stations").update(station.recordId, {
                 "wheelchairAccess": station.wheelchairAccess
             });
 
@@ -43,6 +43,7 @@ async function getAllStations() {
             .all();
         return records.map((record) => {
             return {
+                "recordId": record.id,
                 "id": record.fields.id,
                 "name": record.fields.name,
                 "wheelchairAccess": record.fields.wheelchairAccess
@@ -75,8 +76,6 @@ async function getStationAccessibilityById(stationId) {
         console.log(error);
     }
 }
-
-.stop-accessibility > ul:nth-child(2) > li:nth-child(1)
 
 module.exports = {
     getStationAccessibilityById,
